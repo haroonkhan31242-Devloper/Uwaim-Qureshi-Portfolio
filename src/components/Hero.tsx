@@ -4,18 +4,15 @@ import {
   ArrowRight,
   CheckCircle2,
   Code,
-  Github,
   Globe,
-  Linkedin,
-  Mail,
   Monitor,
   Send,
   Server,
   Smartphone,
-  Twitter,
 } from 'lucide-react';
 import { DEVELOPER_INFO } from '../data/portfolioData';
 import { EASE_OUT } from './ui/motion';
+import { PROFILES, linkTarget, profileLabel } from './ui/profiles';
 
 // three.js is ~600 kB — load it after the page is interactive; the canvas fades in when ready
 const ThreeBackground = lazy(() => import('./ThreeBackground').then((m) => ({ default: m.ThreeBackground })));
@@ -30,13 +27,6 @@ const specializations = [
   { label: 'Modern Web', Icon: Globe },
   { label: 'Desktop Systems', Icon: Monitor },
   { label: 'Scalable Backend', Icon: Server },
-];
-
-const socials = [
-  { href: `mailto:${DEVELOPER_INFO.email}`, label: 'Send an email', Icon: Mail, external: false },
-  { href: DEVELOPER_INFO.socials.github, label: 'GitHub Profile', Icon: Github, external: true },
-  { href: DEVELOPER_INFO.socials.linkedin, label: 'LinkedIn Profile', Icon: Linkedin, external: true },
-  { href: DEVELOPER_INFO.socials.twitter, label: 'Twitter / X Profile', Icon: Twitter, external: true },
 ];
 
 const enter = (delay: number) => ({
@@ -158,16 +148,16 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onContactClick }) =>
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-subtle">Connect</span>
                 <div className="flex items-center gap-1.5">
-                  {socials.map(({ href, label, Icon, external }) => (
+                  {PROFILES.map((profile) => (
                     <a
-                      key={label}
-                      href={href}
-                      className="icon-btn h-9 w-9"
-                      aria-label={label}
-                      title={label}
-                      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      key={profile.id}
+                      href={profile.href}
+                      className="icon-btn h-11 w-11"
+                      aria-label={profileLabel(profile)}
+                      title={profile.label}
+                      {...linkTarget(profile.external)}
                     >
-                      <Icon className="h-4 w-4" />
+                      <profile.Icon className="h-4 w-4" />
                     </a>
                   ))}
                 </div>

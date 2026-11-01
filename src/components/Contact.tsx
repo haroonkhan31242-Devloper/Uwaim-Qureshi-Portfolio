@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { Check, CheckCircle2, ChevronDown, Copy, Github, Info, Linkedin, Mail, MapPin, PhoneCall, Send, Twitter } from 'lucide-react';
+import { ArrowUpRight, Check, CheckCircle2, ChevronDown, Copy, Info, Mail, MapPin, PhoneCall, Send } from 'lucide-react';
 import { DEVELOPER_INFO } from '../data/portfolioData';
 import { Accent, SectionHeader } from './ui/SectionHeader';
 import { Reveal } from './ui/Reveal';
 import { EASE_OUT } from './ui/motion';
+import { PROFILES, linkTarget, profileLabel } from './ui/profiles';
 
 type FormField = 'name' | 'email' | 'subject' | 'message';
 
@@ -24,12 +25,6 @@ const SERVICE_OPTIONS = [
   { value: 'Custom Software Development', label: 'Custom Software Development' },
   { value: 'UI/UX Implementation', label: 'UI/UX Implementation' },
   { value: 'Software Integration & Digital Solutions', label: 'Software Integration & Solutions' },
-];
-
-const socialLinks = [
-  { href: DEVELOPER_INFO.socials.github, label: 'GitHub', Icon: Github },
-  { href: DEVELOPER_INFO.socials.linkedin, label: 'LinkedIn', Icon: Linkedin },
-  { href: DEVELOPER_INFO.socials.twitter, label: 'Twitter / X', Icon: Twitter },
 ];
 
 const FieldError: React.FC<{ id: string; message?: string }> = ({ id, message }) => (
@@ -139,50 +134,68 @@ export const Contact: React.FC = () => {
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Direct channels */}
           <Reveal className="space-y-4 lg:col-span-5">
-            <div className="card p-6 sm:p-7">
-              <h3 className="font-display text-xl font-semibold tracking-tight text-fg">Direct Contact Channels</h3>
+            <div className="card p-5 sm:p-7">
+              <h3 className="font-display text-xl font-semibold tracking-tight text-fg">Connect With Me</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-muted">
                 Reach out directly for freelance contracts, full-time engineering roles, or consulting inquiries.
               </p>
 
-              <div className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface-2 p-3.5">
-                <a href={`mailto:${DEVELOPER_INFO.email}`} className="group flex min-w-0 items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent-ink">
-                    <Mail className="h-[18px] w-[18px]" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.12em] text-subtle">Primary Email</span>
-                    <span className="block truncate text-sm font-semibold text-fg group-hover:text-accent-ink">
-                      {DEVELOPER_INFO.email}
-                    </span>
-                  </span>
-                </a>
-                <button
-                  type="button"
-                  onClick={handleCopyEmail}
-                  className="icon-btn shrink-0"
-                  aria-label={copiedEmail ? 'Email copied' : 'Copy email to clipboard'}
-                  title="Copy email to clipboard"
-                >
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.span
-                      key={copiedEmail ? 'done' : 'copy'}
-                      initial={{ opacity: 0, scale: 0.6 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.6 }}
-                      transition={{ duration: 0.15 }}
-                      className="flex"
+              <ul className="mt-6 space-y-2.5">
+                {PROFILES.map((profile) => {
+                  const { id, label, handle, href, Icon, external } = profile;
+                  return (
+                  <li key={id} className="flex items-stretch gap-2">
+                    <a
+                      href={href}
+                      {...linkTarget(external)}
+                      aria-label={profileLabel(profile)}
+                      className="group flex min-h-14 min-w-0 flex-1 items-center gap-3.5 rounded-2xl border border-line bg-surface-2 p-3 transition-[border-color,background-color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-accent-line hover:bg-surface active:translate-y-0 motion-reduce:hover:translate-y-0"
                     >
-                      {copiedEmail ? <Check className="h-4 w-4 text-mint" /> : <Copy className="h-4 w-4" />}
-                    </motion.span>
-                  </AnimatePresence>
-                </button>
-              </div>
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-surface text-fg transition-colors duration-300 group-hover:border-transparent group-hover:bg-[var(--btn)] group-hover:text-[var(--btn-fg)]">
+                        <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-mono text-[10px] uppercase tracking-[0.12em] text-subtle">{label}</span>
+                        <span className="block text-sm font-semibold leading-snug text-fg transition-colors [overflow-wrap:anywhere] group-hover:text-accent-ink">
+                          {handle}
+                        </span>
+                      </span>
+                      <ArrowUpRight
+                        className="hidden h-4 w-4 shrink-0 text-subtle transition-[transform,color] sm:block duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-ink"
+                        aria-hidden="true"
+                      />
+                    </a>
+                    {id === 'email' && (
+                      <button
+                        type="button"
+                        onClick={handleCopyEmail}
+                        className="icon-btn h-auto w-11 shrink-0 rounded-2xl"
+                        aria-label={copiedEmail ? 'Email copied' : 'Copy email to clipboard'}
+                        title="Copy email to clipboard"
+                      >
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.span
+                            key={copiedEmail ? 'done' : 'copy'}
+                            initial={{ opacity: 0, scale: 0.6 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.6 }}
+                            transition={{ duration: 0.15 }}
+                            className="flex"
+                          >
+                            {copiedEmail ? <Check className="h-4 w-4 text-mint" /> : <Copy className="h-4 w-4" />}
+                          </motion.span>
+                        </AnimatePresence>
+                      </button>
+                    )}
+                  </li>
+                  );
+                })}
+              </ul>
               <div aria-live="polite" className="sr-only">
                 {copiedEmail ? 'Email address copied to clipboard' : ''}
               </div>
 
-              <ul className="mt-5 space-y-3 text-[13px] text-muted">
+              <ul className="mt-6 space-y-3 border-t border-line pt-5 text-[13px] text-muted">
                 <li className="flex items-center gap-3">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-surface-2 text-cobalt">
                     <MapPin className="h-4 w-4" />
@@ -196,18 +209,6 @@ export const Contact: React.FC = () => {
                   Direct WhatsApp / Asynchronous Response within 24h
                 </li>
               </ul>
-
-              <div className="mt-6 border-t border-line pt-5">
-                <div className="eyebrow text-[11px]">Professional Profiles</div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {socialLinks.map(({ href, label, Icon }) => (
-                    <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
-                      <Icon className="h-4 w-4" />
-                      {label}
-                    </a>
-                  ))}
-                </div>
-              </div>
             </div>
 
             <div className="flex items-start gap-3 rounded-2xl border border-[color-mix(in_srgb,var(--cobalt)_25%,transparent)] bg-cobalt-soft p-4 text-xs leading-relaxed text-muted">

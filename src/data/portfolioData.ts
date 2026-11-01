@@ -43,18 +43,17 @@ export interface ProcessStep {
 
 export const DEVELOPER_INFO = {
   fullName: "Eng.Muhammad Uwaim Qureshi",
-  shortName: "Ravez Qureshi",
+  shortName: "Uwaim Qureshi",
   title: "Software Engineer | Full-Stack Developer",
   positioning: "I build modern digital products, scalable applications, and powerful software solutions.",
   headline: "Turning Ideas Into Powerful Digital Experiences.",
   supportingText: "I develop modern websites, cross-platform applications, desktop software, and scalable backend solutions that transform ideas into practical digital products.",
   portraitUrl: "/assets/aistudio/IMG-20261027-WA0277_1_.jpg_2101f575.jpeg",
-  email: "ravez.qureshi.eng@example.com",
+  email: "uwaim2561@gmail.com",
   location: "Available Globally (Remote / Contract / Full-Time)",
   socials: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-    twitter: "https://twitter.com",
+    github: "https://github.com/uwaim45264",
+    linkedin: "https://www.linkedin.com/in/muhammad-uwaim-qureshi-55039b267/",
     whatsapp: "https://wa.me",
   },
   stats: [

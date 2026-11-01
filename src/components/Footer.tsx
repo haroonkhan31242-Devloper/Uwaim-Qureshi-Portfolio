@@ -1,8 +1,9 @@
 import React from 'react';
-import { ArrowUp, ArrowUpRight, Github, Linkedin, Mail, Twitter } from 'lucide-react';
+import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { DEVELOPER_INFO } from '../data/portfolioData';
 import { Reveal } from './ui/Reveal';
 import { scrollToId } from './ui/motion';
+import { PROFILES, linkTarget, profileLabel } from './ui/profiles';
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -12,13 +13,6 @@ const navLinks = [
   { label: 'Projects', href: '#projects' },
   { label: 'Process', href: '#process' },
   { label: 'Contact', href: '#contact' },
-];
-
-const socials = [
-  { href: DEVELOPER_INFO.socials.github, label: 'GitHub', Icon: Github, external: true },
-  { href: DEVELOPER_INFO.socials.linkedin, label: 'LinkedIn', Icon: Linkedin, external: true },
-  { href: DEVELOPER_INFO.socials.twitter, label: 'Twitter', Icon: Twitter, external: true },
-  { href: `mailto:${DEVELOPER_INFO.email}`, label: 'Email', Icon: Mail, external: false },
 ];
 
 export const Footer: React.FC = () => {
@@ -63,16 +57,16 @@ export const Footer: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {socials.map(({ href, label, Icon, external }) => (
+              {PROFILES.map((profile) => (
                 <a
-                  key={label}
-                  href={href}
-                  className="icon-btn h-9 w-9"
-                  aria-label={label}
-                  title={label}
-                  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  key={profile.id}
+                  href={profile.href}
+                  className="icon-btn h-11 w-11"
+                  aria-label={profileLabel(profile)}
+                  title={profile.label}
+                  {...linkTarget(profile.external)}
                 >
-                  <Icon className="h-4 w-4" />
+                  <profile.Icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
